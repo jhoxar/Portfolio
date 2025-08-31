@@ -11,7 +11,7 @@ const Navbar = () => {
   const navLinks = [
     { href: "#home", label: "Home" },
     { href: "#services", label: "Services" },
-    { href: "#about", label: "Work" },
+    { href: "#projects", label: "Work" },
     { href: "#testimonials", label: "Love" },
   ]
 
@@ -75,14 +75,15 @@ const Navbar = () => {
         </motion.div>
 
         {/* CTA Button */}
-        <motion.button 
+        <motion.a 
+          href='#contact'
           variants={fadeIn('left', 0.3)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="hidden md:inline-block bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-3 rounded-xl font-semibold text-sm shadow-md hover:shadow-xl hover:shadow-green-500/30 transition-all"
+          className="hidden cursor-pointer md:inline-block bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-3 rounded-xl font-semibold text-sm shadow-md hover:shadow-xl hover:shadow-green-500/30 transition-all"
         >
-          <a href="#newsletter">Get in touch</a>
-        </motion.button>
+          Get in touch
+        </motion.a>
       </div>
 
       {/* Mobile Menu */}
@@ -121,7 +122,7 @@ const Navbar = () => {
         variants={fadeIn('up', 0.4)}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
-        className="block text-center w-full bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-3 rounded-xl font-semibold text-base shadow-md hover:shadow-lg hover:shadow-green-500/30 transition-all"
+        className="block cursor-pointer text-center w-full bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-3 rounded-xl font-semibold text-base shadow-md hover:shadow-lg hover:shadow-green-500/30 transition-all"
       >
         Get in touch
       </motion.a>
