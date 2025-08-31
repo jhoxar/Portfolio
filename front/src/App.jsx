@@ -9,9 +9,10 @@ import FeaturesSection from './components/FeaturesSection'
 import ScheduleSection from './components/ScheduleSection'
 import MonitorSection from './components/MonitorSection' */
 // import PricingSection from './components/PricingSection'
+// import NewsletterSection from './components/NewsletterSection'
 import ServicesSection from './components/ServicesSection'
 import TestimonialsSection from './components/TestimonialsSection'
-// import NewsletterSection from './components/NewsletterSection'
+import ContactSection from './components/ContactSection'
 import Footer from './components/Footer'
 import ProjectsSection from './components/ProjectsSection'
 
@@ -31,8 +32,8 @@ function App() {
         <ScheduleSection />
         <MonitorSection />
         { <PricingSection /> }
-        
         <NewsletterSection /> */}
+        <ContactSection />
         <Footer />
       </div>
 

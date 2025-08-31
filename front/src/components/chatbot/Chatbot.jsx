@@ -1,83 +1,112 @@
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
+import ChatInput from "./ChatInput";
+import { FaComments, FaTimes } from "react-icons/fa";
 
 const Chatbot = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
 
-  const sendMessage = async (text) => {
-    const newMessage = { type: "user", text };
-    setMessages((prev) => [...prev, newMessage]);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToBottom, [messages, isTyping]);
+
+  const sendMessage = async (msg) => {
+    if (!msg) return;
+
+    // Agregar mensaje del usuario
+    setMessages((prev) => [...prev, { text: msg, sender: "user" }]);
+    setIsTyping(true);
 
     try {
-      const res = await fetch("http://localhost:5000/chat", {
+      const res = await fetch("http://localhost:5000/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: msg }),
       });
       const data = await res.json();
-      setMessages((prev) => [...prev, { type: "bot", text: data.reply }]);
-    } catch (error) {
-      console.error(error);
+
+      // Agregar mensaje del bot
+      setMessages((prev) => [...prev, { text: data.reply, sender: "bot" }]);
+    } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { type: "bot", text: "Oops, algo salió mal." },
+        { text: "No pude conectarme al servidor.", sender: "bot" },
       ]);
     }
+
+    setIsTyping(false);
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-5 right-5 w-80 md:w-96 flex flex-col z-50"
-    >
+    <div className="fixed bottom-6 right-6 z-50">
       {/* Botón flotante */}
-      <motion.button
-        onClick={() => setOpen(!open)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="bg-green-600 text-white rounded-full p-4 shadow-lg flex items-center justify-center font-semibold"
-      >
-        {open ? "Close Chat ✖️" : "Chat with Jhon 🤖"}
-      </motion.button>
+      {!isOpen && (
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="bg-gradient-to-tr from-indigo-500 to-pink-500 w-16 h-16 rounded-full flex items-center justify-center text-white cursor-pointer shadow-2xl fixed bottom-6 right-6"
+          onClick={() => setIsOpen(true)}
+          whileHover={{ scale: 1.15 }}
+        >
+          <FaComments size={24} />
+        </motion.div>
+      )}
 
-      {/* Ventana del chat */}
+      {/* Chatbox */}
       <AnimatePresence>
-        {open && (
+        {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="mt-2 bg-gray-900 rounded-xl shadow-2xl overflow-hidden flex flex-col h-[500px]"
+            initial={{ opacity: 0, y: 50, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 50, scale: 0.8 }}
+            className="w-80 h-[500px] bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl mt-4 flex flex-col overflow-hidden border border-gray-200"
           >
-            {/* Header */}
-            <motion.div
-              className="p-4 bg-green-700 text-white font-bold text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              Chat with Jhon 🤖
-            </motion.div>
+            {/* Header con botón cerrar */}
+            <div className="flex justify-between items-center p-3 bg-indigo-500 text-white">
+              <span>Vamos a charlar 🤖</span>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-white text-lg"
+              >
+                <FaTimes />
+              </button>
+            </div>
 
             {/* Mensajes */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-3">
-              <AnimatePresence>
-                {messages.map((msg, i) => (
-                  <ChatMessage key={i} message={msg} />
-                ))}
-              </AnimatePresence>
+            <div className="flex-1 overflow-y-auto p-3 space-y-2">
+              {messages.map((m, i) => (
+                <ChatMessage key={i} message={m} />
+              ))}
+
+              {isTyping && (
+                <div className="flex justify-start">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="bg-gray-200 text-gray-800 p-2 rounded-lg max-w-xs animate-pulse"
+                  >
+                    escribiendo...
+                  </motion.div>
+                </div>
+              )}
+
+              <div ref={messagesEndRef}></div>
             </div>
 
             {/* Input */}
-            <ChatInput sendMessage={sendMessage} />
+            <div className="p-2 border-t border-gray-300 bg-white/80 backdrop-blur-sm">
+              <ChatInput sendMessage={sendMessage} />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 };
 

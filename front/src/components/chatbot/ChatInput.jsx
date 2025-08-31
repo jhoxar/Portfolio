@@ -1,43 +1,36 @@
-//import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FiSend } from 'react-icons/fi';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
 const ChatInput = ({ sendMessage }) => {
-  const [text, setText] = useState('');
+  const [input, setInput] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!text.trim()) return;
-    sendMessage(text.trim());
-    setText('');
+    if (input.trim() === "") return;
+    sendMessage(input); // Llama a la función del Chatbot
+    setInput("");
   };
 
   return (
-    <motion.form
-      onSubmit={handleSubmit}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="flex items-center gap-2 w-full"
-    >
-      <input
+    <form onSubmit={handleSubmit} className="flex gap-2">
+      <motion.input
         type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Ask me anything..."
-        className="flex-1 px-4 py-2 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Escribe tu mensaje..."
+        className="flex-1 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        whileFocus={{ scale: 1.02 }}
       />
       <motion.button
         type="submit"
-        whileHover={{ scale: 1.1 }}
+        className="bg-indigo-500 text-white px-4 rounded-lg hover:bg-indigo-600"
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full flex items-center justify-center transition-colors"
       >
-        <FiSend className="w-5 h-5" />
+        Enviar
       </motion.button>
-    </motion.form>
+    </form>
   );
 };
 
