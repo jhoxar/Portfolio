@@ -1,11 +1,10 @@
 import { motion } from "framer-motion"
 import { fadeIn, textVariant } from "../utils/motion"
 import { useState } from "react"
-import {  FaPlay, FaGithub } from "react-icons/fa"
+import { FaPlay, FaGithub } from "react-icons/fa"
 import movieMarketImg from "../assets/movieMarket.png"
 import loopStudiosImg from "../assets/loopStudios.png"
 import koreanFoodImg from "../assets/koreanFood.png"
-
 
 const projects = [
   {
@@ -38,7 +37,7 @@ const ProjectsSection = () => {
   const [flippedIndex, setFlippedIndex] = useState(null)
 
   const handleFlip = (index) => {
-    setFlippedIndex(index)
+    setFlippedIndex(flippedIndex === index ? null : index)
   }
 
   const handleAction = (index, url) => {
@@ -81,72 +80,66 @@ const ProjectsSection = () => {
         {/* Projects Grid */}
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              variants={fadeIn("up", 0.2 * (index + 1))}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true }}
-              className="relative w-full"
-            >
-              <div
-                className={` w-full h-full transition-transform duration-700  ${
-      flippedIndex === index ? "rotate-y-180" : ""
-    }`}
-              >
-                {/* Front */}
-                <div className=" bg-gray-50 rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col ">
-                  <div className="relative">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full object-cover"
-                    />
+            <div key={index} className="relative w-full h-[420px]">
+              {/* PERSPECTIVE en un wrapper sin transforms */}
+              <div className="perspective h-full">
+                {/* Elemento que ROTA */}
+                <div
+                  className={`relative h-full w-full preserve-3d transition-transform duration-700 ${
+                    flippedIndex === index ? "rotate-y-180" : ""
+                  }`}
+                >
+                  {/* FRONT */}
+                  <div className="absolute inset-0 backface-hidden bg-gray-50 rounded-xl shadow-sm hover:shadow-xl transition-shadow overflow-hidden flex flex-col">
+                    <div className="relative">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-40 object-cover"
+                      />
+                    </div>
+                    <div className="p-6 flex flex-col flex-grow text-center">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm flex-grow">
+                        {project.description}
+                      </p>
+                      <button
+                        onClick={() => handleFlip(index)}
+                        className="mt-4 mx-auto bg-gradient-to-r from-green-600 to-black text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-xl hover:scale-105 transition-all"
+                      >
+                        View Project
+                      </button>
+                    </div>
                   </div>
-                  <div className="p-6 flex flex-col flex-grow text-center">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm flex-grow">
-                      {project.description}
-                    </p>
-                    <button
-                      onClick={() => handleFlip(index)}
-                      className="mt-4 mx-auto bg-gradient-to-r from-green-600 to-black text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-xl hover:scale-105 transition-all"
-                    >
-                      View Project
-                    </button>
+
+                  {/* BACK */}
+                  <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-xl p-6 shadow-xl flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 via-green-800 to-black text-white">
+                    <h3 className="text-lg font-bold mb-6">Explore this project</h3>
+                    <div className="flex flex-col gap-4 w-full">
+                      <button
+                        onClick={() => handleAction(index, project.live)}
+                        className="flex items-center gap-3 bg-white text-green-800 px-5 py-3 rounded-xl font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition"
+                      >
+                        <FaPlay className="text-green-600" />
+                        Live Demo
+                      </button>
+                      <button
+                        onClick={() => handleAction(index, project.code)}
+                        className="flex items-center gap-3 bg-green-900 text-white px-5 py-3 rounded-xl font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition"
+                      >
+                        <FaGithub className="text-gray-200" />
+                        View Code
+                      </button>
+                    </div>
                   </div>
                 </div>
-
-                {/* Back */}
-               
-
-                 <div className="absolute inset-0 rounded-2xl p-6 shadow-xl backface-hidden rotate-y-180 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 via-green-800 to-black text-white">
-                                  <h3 className="text-lg font-bold mb-6">Explore this project</h3>
-                                  <div className="flex flex-col gap-4 w-full">
-                                    <button
-                                      onClick={() => handleAction(index, project.live)}
-                                      className="flex items-center gap-3 bg-white text-green-800 px-5 py-3 rounded-xl font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition"
-                                    >
-                                      <FaPlay className="text-green-600" />
-                                      Live Demo
-                                    </button>
-                                    <button
-                                      onClick={() => handleAction(index, project.code)}
-                                      className="flex items-center gap-3 bg-green-900 text-white px-5 py-3 rounded-xl font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition"
-                                    >
-                                      <FaGithub className="text-gray-200" />
-                                      View Code
-                                    </button>
-                                  </div>
-                                </div>
-
-                
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
+
       </div>
     </section>
   )
