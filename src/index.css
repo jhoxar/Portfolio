@@ -7,11 +7,12 @@ html {
 
 /* customize container here using tailwindcss */
 .section-container {
-  @apply  px-4 sm:px-6 lg:px-8 py-16 container mx-auto;
+  @apply px-4 sm:px-6 lg:px-8 py-16 container mx-auto;
 }
 
+/* --------- Utilidades generales --------- */
 .perspective {
-  perspective: 1000px;
+  perspective: 1500px;
 }
 
 .preserve-3d {
@@ -26,6 +27,7 @@ html {
   transform: rotateY(180deg);
 }
 
+/* Hero 3D */
 .hero-3d-container {
   display: flex;
   flex-direction: column;
@@ -55,6 +57,74 @@ html {
   transform: none !important;
 }
 
+/* --------- Cards 3D con flip --------- */
 
+/* Contenedor hover tilt */
+.card-tilt {
+  position: relative; /* necesario para que ::before no bloquee clicks */
+  transform-style: preserve-3d;
+  transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 350ms ease;
+  will-change: transform;
+}
+.card-tilt:hover {
+  transform: translateY(-8px) rotateX(6deg) rotateY(6deg) scale(1.02);
+  box-shadow: 0 28px 70px rgba(2, 6, 23, 0.5);
+}
 
+/* Flip (solo rota en Y) */
+.flip-card {
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.flip-card.is-flipped {
+  transform: rotateY(180deg);
+}
 
+/* Caras */
+.card-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 0.75rem; /* coincide con rounded-xl */
+  overflow: hidden;
+}
+.card-face.front { }
+.card-face.back {
+  transform: rotateY(180deg);
+}
+
+/* 🔥 Fix: activar clicks solo en la cara visible */
+.flip-card.is-flipped .card-face.back {
+  pointer-events: auto;
+}
+.flip-card.is-flipped .card-face.front {
+  pointer-events: none;
+}
+
+/* Profundidad interna */
+.card-face .p-6 {
+  transform: translateZ(28px);
+}
+
+/* Glow sutil alrededor */
+.card-tilt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(0,255,204,0.02), rgba(0,119,255,0.02));
+  mix-blend-mode: screen;
+}
+
+/* Mobile: reduce intensidad */
+/* @media (max-width: 640px) {
+  .card-tilt:hover {
+    transform: none;
+    box-shadow: 0 12px 30px rgba(2, 6, 23, 0.25);
+  }
+  .card-face .p-6 {
+    transform: translateZ(12px);
+  }
+} */
