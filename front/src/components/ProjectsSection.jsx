@@ -87,20 +87,20 @@ const ProjectsSection = () => {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="relative w-full h-[380px] perspective"
+              className="relative w-full"
             >
               <div
-                className={`relative w-full h-full transition-transform duration-700 preserve-3d ${
+                className={` w-full h-full transition-transform duration-700  ${
       flippedIndex === index ? "rotate-y-180" : ""
     }`}
               >
                 {/* Front */}
-                <div className="absolute inset-0 backface-hidden bg-gray-50 rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col">
+                <div className=" bg-gray-50 rounded-xl shadow-sm hover:shadow-xl transition-all overflow-hidden flex flex-col ">
                   <div className="relative">
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-48 object-cover"
+                      className="w-full object-cover"
                     />
                   </div>
                   <div className="p-6 flex flex-col flex-grow text-center">
