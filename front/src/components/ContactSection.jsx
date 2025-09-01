@@ -206,22 +206,34 @@ const ContactSection = () => {
               exit={{ opacity: 0, scale: 0.8 }}
             >
               <div className="bg-gray-900 rounded-2xl shadow-2xl p-10 max-w-md w-full text-center border border-green-700 relative">
-                {/* Close button */}
-                <button
-                  onClick={() => setIsSent(false)}
-                  className="absolute top-4 right-4 text-gray-400 hover:text-white transition"
-                >
-                  <FiX size={24} />
-                </button>
+  {/* Close button */}
+  <button
+    onClick={() => setIsSent(false)}
+    className="absolute top-4 right-4 text-gray-400 hover:text-white transition"
+  >
+    <FiX size={24} />
+  </button>
 
-                <h2 className="text-2xl font-bold text-green-400 mb-4">
-                  🎉 Message Sent!
-                </h2>
-                <p className="text-gray-300">
-                  Thanks for reaching out! I’ll get back to you as soon as
-                  possible 🚀
-                </p>
-              </div>
+  <h2 className="text-2xl font-bold text-green-400 mb-4">
+    🎉 Message Sent!
+  </h2>
+  <p className="text-gray-300 mb-6">
+    Thanks for reaching out!  
+    I’ve also sent you a confirmation email.  
+    <br />
+    Let’s take the next step together 🚀
+  </p>
+
+  <a
+    href="https://calendly.com/jhoxardev/30min"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:shadow-lg hover:shadow-green-500/30"
+  >
+    📅 Schedule a 30-min Call
+  </a>
+</div>
+
             </motion.div>
           </>
         )}

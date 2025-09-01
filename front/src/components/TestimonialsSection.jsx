@@ -5,31 +5,40 @@ import 'swiper/css/navigation';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../utils/motion";
+import elenaPicture from "../assets/ElenaR.jpeg"
+import diegoPicture from "../assets/diegoR.jpeg"
+import suryaPicture from "../assets/SuryaR.jpeg"
+import enriquePicture from "../assets/enriqueR.jpeg"
+import { FaQuoteLeft } from "react-icons/fa";
 
 const testimonials = [
   {
     id: 1,
-    name: "Robin Ayala Doe", 
-    image: "https://randomuser.me/api/portraits/men/77.jpg",
-    text: "Working with Jhon was seamless. He turned complex ideas into clean, functional solutions and made the whole process enjoyable.",
+    name: "Elena Barón", 
+    role: "Sr. Talent Acquisition",
+    image: elenaPicture,
+    text: "Jhon is a proactive professional who takes full ownership of projects. He excels in web development, UX/UI, and AI, and is always a strong team player.",
   },
   {
     id: 2,
-    name: "John De Marli",
-    image: "https://randomuser.me/api/portraits/women/90.jpg", 
-    text: "His automation workflows saved us hours every week. Beyond the tech, he genuinely cares about impact.",
+    name: "Diego Muñoz",
+    role: "Data & AI Specialist",
+    image: diegoPicture, 
+    text: "Jhon is highly disciplined and always delivers projects on time. Whatever he starts, he finishes with quality and precision.",
   },
   {
     id: 3,
-    name: "Sarah Johnson",
-    image: "https://randomuser.me/api/portraits/women/45.jpg",
-    text: "The attention to detail and UI/UX improvements elevated our product. Jhon is a rare blend of dev and designer.",
+    name: "Surya Sanchez",
+    role: "CEO of Deepidealab",
+    image: suryaPicture,
+    text: "Jhon consistently delivers high-quality results on time. He is collaborative, creative, and truly passionate about working with teams.",
   },
   {
     id: 4,
-    name: "Michael Chen",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    text: "From APIs to React apps, everything was delivered with quality and speed. Highly recommend!",
+    name: "Enrique Olivares",
+    role: "Technology Lead",
+    image: enriquePicture,
+    text: "Jhon is an outstanding individual with a true passion for artificial intelligence and software development. I’ve never seen anyone complete a Python course in just one day and immediately build a project from it.",
   },
 ];
 
@@ -85,19 +94,18 @@ const TestimonialsSection = () => {
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
-                <div className="flex justify-center mb-3">
-                  {[...Array(5)].map((_, starIndex) => (
-                    <span 
-                      key={starIndex} 
-                      className="text-green-500"
-                    >
-                      ★
-                    </span>
-                  ))}
+
+                {/* Decorative Icon */}
+                <div className="flex justify-center mb-3 text-green-500">
+                  <FaQuoteLeft className="w-6 h-6" />
                 </div>
-                <h3 className="font-semibold text-lg text-gray-800 mb-3">
+
+                <h3 className="font-semibold text-lg text-gray-800">
                   {testimonial.name}
                 </h3>
+                <p className="text-green-600 text-sm font-medium mb-3">
+                  {testimonial.role}
+                </p>
                 <p className="text-gray-600 text-sm md:text-base">
                   {testimonial.text}
                 </p>

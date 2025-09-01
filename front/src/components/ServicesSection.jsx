@@ -1,4 +1,3 @@
-import React from "react";
 import { FaCode, FaRobot, FaServer, FaPaintBrush } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { fadeIn, textVariant } from "../utils/motion";

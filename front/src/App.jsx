@@ -2,14 +2,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import SkillsShowcase from './components/SkillsShowcase'
-import Chatbot from './components/chatbot/Chatbot';
-
-/* import PurposeSection from './components/PurposeSection'
-import FeaturesSection from './components/FeaturesSection'
-import ScheduleSection from './components/ScheduleSection'
-import MonitorSection from './components/MonitorSection' */
-// import PricingSection from './components/PricingSection'
-// import NewsletterSection from './components/NewsletterSection'
+import Chatbot from './components/chatbot/Chatbot'
 import ServicesSection from './components/ServicesSection'
 import TestimonialsSection from './components/TestimonialsSection'
 import ContactSection from './components/ContactSection'
@@ -27,12 +20,6 @@ function App() {
         <SkillsShowcase />
         <ProjectsSection/>
         <TestimonialsSection />
-        {/* <PurposeSection />
-        <FeaturesSection />
-        <ScheduleSection />
-        <MonitorSection />
-        { <PricingSection /> }
-        <NewsletterSection /> */}
         <ContactSection />
         <Footer />
       </div>
