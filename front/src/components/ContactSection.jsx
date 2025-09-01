@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, textVariant } from "../utils/motion";
 import { FiMail, FiPhone, FiLinkedin, FiGithub, FiX } from "react-icons/fi";
-import emailjs from "@emailjs/browser";
+// import emailjs from "@emailjs/browser";
 
 const ContactSection = () => {
   const [isSent, setIsSent] = useState(false);
@@ -35,7 +35,7 @@ const ContactSection = () => {
 
     setErrors({});
 
-    emailjs
+    /* emailjs
       .sendForm(
         "service_nxmn558", // tu serviceID
         "template_rly8l6l", // tu templateID
@@ -50,7 +50,7 @@ const ContactSection = () => {
         (error) => {
           console.error("FAILED...", error);
         }
-      );
+      ); */
   };
 
   return (
