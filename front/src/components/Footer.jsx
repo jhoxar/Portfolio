@@ -79,14 +79,16 @@ const Footer = () => {
               </motion.a>
               <motion.a 
                 whileHover={{ scale: 1.1 }}
-                href="#" 
+                href="https://www.linkedin.com/in/jhon-ramirez-ba7102139/" 
+                target='_blank'
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:bg-green-500 hover:text-white transition-colors"
               >
                 <FaLinkedinIn className="w-5 h-5" />
               </motion.a>
               <motion.a 
                 whileHover={{ scale: 1.1 }}
-                href="#" 
+                href="https://github.com/jhoxar" 
+                target='_blank'
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:bg-green-500 hover:text-white transition-colors"
               >
                 <FaGithub className="w-5 h-5" />
