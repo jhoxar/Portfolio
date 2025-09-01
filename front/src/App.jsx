@@ -2,7 +2,6 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import SkillsShowcase from './components/SkillsShowcase'
-import Chatbot from './components/chatbot/Chatbot'
 import ServicesSection from './components/ServicesSection'
 import TestimonialsSection from './components/TestimonialsSection'
 import ContactSection from './components/ContactSection'
@@ -24,8 +23,7 @@ function App() {
         <Footer />
       </div>
 
-      {/* Chatbot flotante */}
-      <Chatbot />
+      
     </main>
   )
 }
