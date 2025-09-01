@@ -1,4 +1,4 @@
-import { useState } from "react";
+import  { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn, textVariant } from "../utils/motion";
 import { FiMail, FiPhone, FiLinkedin, FiGithub, FiX } from "react-icons/fi";
@@ -8,49 +8,65 @@ const ContactSection = () => {
   const [isSent, setIsSent] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const validateForm = (formData) => {
-    let newErrors = {};
-
-    if (!formData.get("user_name")) newErrors.user_name = "Name is required";
-    if (!formData.get("user_email")) {
-      newErrors.user_email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.get("user_email"))) {
+  const validateValues = ({ user_name, user_email, message }) => {
+    const newErrors = {};
+    if (!user_name) newErrors.user_name = "Name is required";
+    if (!user_email) newErrors.user_email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(user_email))
       newErrors.user_email = "Invalid email format";
-    }
-    if (!formData.get("message")) newErrors.message = "Message is required";
-
+    if (!message) newErrors.message = "Message is required";
     return newErrors;
   };
 
   const handleSendMessage = (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target);
-    const validationErrors = validateForm(formData);
+    const form = e.target;
+    const fd = new FormData(form);
+    const user_name = (fd.get("user_name") ?? "").toString().trim();
+    const user_email = (fd.get("user_email") ?? "").toString().trim();
+    const message = (fd.get("message") ?? "").toString().trim();
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
+    const newErrors = validateValues({ user_name, user_email, message });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
     setErrors({});
 
-    /* emailjs
-      .sendForm(
-        "service_nxmn558", // tu serviceID
-        "template_rly8l6l", // tu templateID
-        e.target,
-        "kN1gOfsicf5C617e_" // tu publicKey
-      )
-      .then(
-        () => {
-          setIsSent(true);
-          e.target.reset();
-        },
-        (error) => {
-          console.error("FAILED...", error);
-        }
-      ); */
+    // Si quieres integrar emailjs, descomenta y usa la llamada real aquí.
+    // emailjs.sendForm(...).then(() => { ... })
+
+    // Simulación de envío exitoso
+    setIsSent(true);
+    form.reset();
+  };
+
+  const handleFieldChange = (e) => {
+    const { name, value } = e.target;
+    if (!errors[name]) return;
+    const trimmed = value.toString().trim();
+    if (trimmed.length > 0) {
+      setErrors((prev) => {
+        const copy = { ...prev };
+        delete copy[name];
+        return copy;
+      });
+    }
+
+    // Si es email, intenta validar en tiempo real y remover el error si ya es válido
+    if (name === "user_email") {
+      const isValid = /\S+@\S+\.\S+/.test(value);
+      if (isValid) {
+        setErrors((prev) => {
+          const copy = { ...prev };
+          delete copy.user_email;
+          return copy;
+        });
+      }
+    }
   };
 
   return (
@@ -70,7 +86,7 @@ const ContactSection = () => {
           variants={textVariant(0.2)}
           className="text-3xl md:text-5xl font-extrabold mb-6 leading-tight"
         >
-          Let’s Build Something{" "}
+          Let’s Build Something {" "}
           <span className="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">
             Extraordinary
           </span>
@@ -101,12 +117,11 @@ const ContactSection = () => {
                   type="text"
                   name="user_name"
                   placeholder="Your Name"
+                  onChange={handleFieldChange}
                   className="w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-green-500 outline-none transition"
                 />
                 {errors.user_name && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.user_name}
-                  </p>
+                  <p className="text-red-500 text-sm mt-1">{errors.user_name}</p>
                 )}
               </div>
 
@@ -115,12 +130,11 @@ const ContactSection = () => {
                   type="email"
                   name="user_email"
                   placeholder="Your Email"
+                  onChange={handleFieldChange}
                   className="w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-green-500 outline-none transition"
                 />
                 {errors.user_email && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.user_email}
-                  </p>
+                  <p className="text-red-500 text-sm mt-1">{errors.user_email}</p>
                 )}
               </div>
 
@@ -129,6 +143,7 @@ const ContactSection = () => {
                   rows="5"
                   name="message"
                   placeholder="Tell me about your project..."
+                  onChange={handleFieldChange}
                   className="w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-green-500 outline-none transition resize-none"
                 ></textarea>
                 {errors.message && (
@@ -196,6 +211,7 @@ const ContactSection = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              onClick={() => setIsSent(false)}
             ></motion.div>
 
             {/* Popup */}
@@ -206,34 +222,30 @@ const ContactSection = () => {
               exit={{ opacity: 0, scale: 0.8 }}
             >
               <div className="bg-gray-900 rounded-2xl shadow-2xl p-10 max-w-md w-full text-center border border-green-700 relative">
-  {/* Close button */}
-  <button
-    onClick={() => setIsSent(false)}
-    className="absolute top-4 right-4 text-gray-400 hover:text-white transition"
-  >
-    <FiX size={24} />
-  </button>
+                {/* Close button */}
+                <button
+                  onClick={() => setIsSent(false)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white transition"
+                >
+                  <FiX size={24} />
+                </button>
 
-  <h2 className="text-2xl font-bold text-green-400 mb-4">
-    🎉 Message Sent!
-  </h2>
-  <p className="text-gray-300 mb-6">
-    Thanks for reaching out!  
-    I’ve also sent you a confirmation email.  
-    <br />
-    Let’s take the next step together 🚀
-  </p>
+                <h2 className="text-2xl font-bold text-green-400 mb-4">🎉 Message Sent!</h2>
+                <p className="text-gray-300 mb-6">
+                  Thanks for reaching out! I’ll get back to you soon.
+                  <br />
+                  Let’s take the next step together 🚀
+                </p>
 
-  <a
-    href="https://calendly.com/jhoxardev/30min"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:shadow-lg hover:shadow-green-500/30"
-  >
-    📅 Schedule a 30-min Call
-  </a>
-</div>
-
+                <a
+                  href="https://calendly.com/jhoxardev/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-all hover:shadow-lg hover:shadow-green-500/30"
+                >
+                  📅 Schedule a 30-min Call
+                </a>
+              </div>
             </motion.div>
           </>
         )}

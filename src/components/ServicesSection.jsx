@@ -53,30 +53,30 @@ const ServicesSection = () => {
           </motion.h2>
           <motion.p
             variants={fadeIn("up", 0.5)}
-            className="text-gray-600 text-lg mb-4 md:w-4/5"
+            className="text-gray-600 text-lg md:w-4/5"
           >
             I turn code, automation, and design into real business impact.
           </motion.p>
 
           {/* bullet points */}
-          <motion.div variants={fadeIn("up", 0.6)} className="space-y-3">
+          <motion.div variants={fadeIn("up", 0.6)} className="">
             <motion.div
               variants={fadeIn("right", 0.7)}
-              className="flex items-center gap-2"
+              className=""
             >
-              <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
+             {/*  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
                 <div className="w-2.5 h-2.5 rounded-full bg-green-600"></div>
-              </div>
-              <span className="text-gray-600">Scalable full-stack apps</span>
+              </div> */}
+              {/* <span className="text-gray-600">Scalable full-stack apps</span> */}
             </motion.div>
             <motion.div
               variants={fadeIn("right", 0.8)}
               className="flex items-center gap-2 mb-8"
             >
-              <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
+              {/* <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center">
                 <div className="w-2.5 h-2.5 rounded-full bg-green-600"></div>
-              </div>
-              <span className="text-gray-600 ">AI workflows & automation</span>
+              </div> */}
+              {/* <span className="text-gray-600 ">AI workflows & automation</span> */}
             </motion.div>
           </motion.div>
 

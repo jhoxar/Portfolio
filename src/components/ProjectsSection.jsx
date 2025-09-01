@@ -34,15 +34,27 @@ const projects = [
 ]
 
 const ProjectsSection = () => {
-  const [flippedIndex, setFlippedIndex] = useState(null)
+  // Un array de booleanos para trackear cuáles están volteadas
+  const [flipped, setFlipped] = useState(Array(projects.length).fill(false))
 
   const handleFlip = (index) => {
-    setFlippedIndex(flippedIndex === index ? null : index)
+    setFlipped((prev) => {
+      const newFlipped = [...prev]
+      newFlipped[index] = !newFlipped[index] // solo cambia esa card
+      return newFlipped
+    })
   }
 
   const handleAction = (index, url) => {
     window.open(url, "_blank")
-    setTimeout(() => setFlippedIndex(null), 2000) // vuelve al estado original
+    // Opcional: volver la card a su estado original luego de 2s
+    setTimeout(() => {
+      setFlipped((prev) => {
+        const newFlipped = [...prev]
+        newFlipped[index] = false
+        return newFlipped
+      })
+    }, 2000)
   }
 
   return (
@@ -81,12 +93,10 @@ const ProjectsSection = () => {
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {projects.map((project, index) => (
             <div key={index} className="relative w-full h-[420px]">
-              {/* PERSPECTIVE en un wrapper sin transforms */}
               <div className="perspective h-full">
-                {/* Elemento que ROTA */}
                 <div
                   className={`relative h-full w-full preserve-3d transition-transform duration-700 ${
-                    flippedIndex === index ? "rotate-y-180" : ""
+                    flipped[index] ? "rotate-y-180" : ""
                   }`}
                 >
                   {/* FRONT */}
@@ -116,7 +126,9 @@ const ProjectsSection = () => {
 
                   {/* BACK */}
                   <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-xl p-6 shadow-xl flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 via-green-800 to-black text-white">
-                    <h3 className="text-lg font-bold mb-6">Explore this project</h3>
+                    <h3 className="text-lg font-bold mb-6">
+                      Explore this project
+                    </h3>
                     <div className="flex flex-col gap-4 w-full">
                       <button
                         onClick={() => handleAction(index, project.live)}
@@ -139,7 +151,6 @@ const ProjectsSection = () => {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   )
